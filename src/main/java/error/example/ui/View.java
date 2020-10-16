@@ -52,11 +52,11 @@ public class View {
     public void someMethodWithEither() {
         var applicationService = new ApplicationService();
         var either = applicationService.methodWithEither();
-        either.peek(logger::info);
-        either.peekLeft(e -> Match(e).of(
-                Case($(instanceOf(SomeDomainError.class)), t -> run(() -> logger.warning(t.getMessage()))),
-                Case($(instanceOf(AnotherDomainError.class)), t -> run(() -> logger.severe(t.getMessage())))
-        ));
+        either.peek(logger::info)
+                .orElseRun(e -> Match(e).of(
+                        Case($(instanceOf(SomeDomainError.class)), t -> run(() -> logger.warning(t.getMessage()))),
+                        Case($(instanceOf(AnotherDomainError.class)), t -> run(() -> logger.severe(t.getMessage())))
+                ));
     }
 
 }
